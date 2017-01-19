@@ -16,7 +16,7 @@ class Configuration
      *
      * @param $directory
      */
-    public function load(string $directory): void
+    public function load(string $directory)
     {
         if (!is_dir($directory)) {
             return;
@@ -107,7 +107,7 @@ class Configuration
      * @param string $key
      * @param mixed $value
      */
-    public function set(string $key, $value): void
+    public function set(string $key, $value)
     {
         $keys = explode('.', $key);
         $finalKey = array_pop($keys);
@@ -129,7 +129,7 @@ class Configuration
      *
      * @param string $key
      */
-    public function delete(string $key): void
+    public function delete(string $key)
     {
         $keys = explode('.', $key);
         $finalKey = array_pop($keys);
