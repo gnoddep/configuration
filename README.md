@@ -8,3 +8,7 @@ in a directory.
 ```bash
 composer install nerdman/configuration
 ```
+
+## License
+
+MIT license, see the [`LICENSE`](LICENSE) file.

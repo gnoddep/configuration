@@ -1,6 +1,7 @@
 {
     "name": "nerdman/configuration",
     "description": "A small library inspired by Laravel to read configuration from PHP-files in a directory",
+    "homepage": "https://github.com/gnoddep/configuration",
     "authors": [
         {
             "name": "Peter Gnodde",
