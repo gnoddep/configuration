@@ -1,0 +1,29 @@
+{
+    "name": "nerdman/configuration",
+    "description": "A small library inspired by Laravel to read configuration from PHP-files in a directory",
+    "authors": [
+        {
+            "name": "Peter Gnodde",
+            "email": "configuration@nerdman.nl",
+            "homepage": "https://nerdman.nl/"
+        }
+    ],
+    "license": "MIT",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Nerdman\\Configuration\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Nerdman\\Configuration\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    }
+}
