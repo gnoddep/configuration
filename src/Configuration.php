@@ -4,7 +4,6 @@ namespace Nerdman\Configuration;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use RegexIterator;
 
 class Configuration
 {
@@ -24,12 +23,7 @@ class Configuration
 
         $directory = rtrim($directory, DIRECTORY_SEPARATOR);
 
-        $iterator = new RegexIterator(
-            new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS)),
-            '/^(.+)\.php$/',
-            RegexIterator::MATCH
-        );
-
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS));
         foreach ($iterator as $file) {
             /** @var \SplFileObject $file */
             if (!$file->isFile() || $file->getExtension() !== 'php') {
