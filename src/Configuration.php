@@ -1,46 +1,39 @@
 <?php
 namespace Nerdman\Configuration;
 
-use FilesystemIterator;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-
 class Configuration
 {
-    /** @var array */
-    private $config = [];
+    private array $config = [];
 
     /**
      * Finds and load all PHP file in the given directory, overwriting duplicate configuration keys
-     *
-     * @param $directory
      */
-    public function load(string $directory)
+    public function load(string $directory): void
     {
-        if (!is_dir($directory)) {
+        if (!\is_dir($directory)) {
             return;
         }
 
-        $directory = rtrim($directory, DIRECTORY_SEPARATOR);
+        $directory = \rtrim($directory, DIRECTORY_SEPARATOR);
 
-        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS));
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS));
         foreach ($iterator as $file) {
             /** @var \SplFileObject $file */
             if (!$file->isFile() || $file->getExtension() !== 'php') {
                 continue;
             }
 
-            $dir = substr($file->getPath(), strlen($directory) + 1);
-            $filename = strtolower(substr($file->getFilename(), 0, -4));
+            $dir = \substr($file->getPath(), \strlen($directory) + 1);
+            $filename = \strtolower(\substr($file->getFilename(), 0, -4));
 
             $keys = [];
             if ($dir) {
-                $keys = explode('/', $dir);
+                $keys = \explode('/', $dir);
             }
 
             $config = &$this->config;
             foreach ($keys as $key) {
-                $key = strtolower($key);
+                $key = \strtolower($key);
 
                 if (!isset($config[$key])) {
                     $config[$key] = [];
@@ -55,8 +48,8 @@ class Configuration
 
             $addConfiguration = require $file;
 
-            if (is_array($addConfiguration)) {
-                $config[$filename] = array_replace_recursive($config[$filename], require $file);
+            if (\is_array($addConfiguration)) {
+                $config[$filename] = \array_replace_recursive($config[$filename], require $file);
             } else {
                 $config[$filename] = $addConfiguration;
             }
@@ -65,21 +58,18 @@ class Configuration
 
     /**
      * Get a value from the configuration store
-     *
-     * @param string $key
-     * @param mixed|null $defaultValue
-     * @return mixed
      */
-    public function get(string $key, $defaultValue = null)
+    public function get(string $key, mixed $defaultValue = null): mixed
     {
-        $keys = explode('.', $key);
+        $keys = \explode('.', $key);
 
         $config = &$this->config;
         foreach ($keys as $key) {
-            $config = &$config[$key] ?? null;
-            if ($config === null) {
+            if (!isset($config[$key])) {
                 break;
             }
+
+            $config = &$config[$key];
         }
 
         return $config ?? $defaultValue;
@@ -87,24 +77,19 @@ class Configuration
 
     /**
      * Get all configuration keys as an array
-     *
-     * @return mixed[]
      */
-    public function getAll()
+    public function getAll(): array
     {
         return $this->config;
     }
 
     /**
      * Set a configuration key
-     *
-     * @param string $key
-     * @param mixed $value
      */
-    public function set(string $key, $value)
+    public function set(string $key, mixed $value): void
     {
-        $keys = explode('.', $key);
-        $finalKey = array_pop($keys);
+        $keys = \explode('.', $key);
+        $finalKey = \array_pop($keys);
 
         $config = &$this->config;
         foreach ($keys as $key) {
@@ -120,13 +105,11 @@ class Configuration
 
     /**
      * Remove a configuration key
-     *
-     * @param string $key
      */
-    public function delete(string $key)
+    public function delete(string $key): void
     {
-        $keys = explode('.', $key);
-        $finalKey = array_pop($keys);
+        $keys = \explode('.', $key);
+        $finalKey = \array_pop($keys);
 
         $config = &$this->config;
         foreach ($keys as $key) {

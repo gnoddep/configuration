@@ -1,14 +1,13 @@
 <?php
 namespace Nerdman\Configuration;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ConfigurationTest extends PHPUnit_Framework_TestCase
+class ConfigurationTest extends TestCase
 {
-    /** @var Configuration */
-    private $SUT;
+    private Configuration $SUT;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->SUT = new Configuration();
     }
@@ -16,35 +15,35 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
     public function testSetGet()
     {
         $this->SUT->set('key', 'value');
-        $this->assertEquals('value', $this->SUT->get('key'));
+        self::assertEquals('value', $this->SUT->get('key'));
 
         $this->SUT->set('array', ['test' => 'value']);
-        $this->assertEquals(['test' => 'value'], $this->SUT->get('array'));
-        $this->assertEquals('value', $this->SUT->get('array.test'));
+        self::assertEquals(['test' => 'value'], $this->SUT->get('array'));
+        self::assertEquals('value', $this->SUT->get('array.test'));
 
         $this->SUT->set('deeper.array.value', 'test');
-        $this->assertEquals('test', $this->SUT->get('deeper.array.value'));
-        $this->assertEquals(['array' => ['value' => 'test']], $this->SUT->get('deeper'));
+        self::assertEquals('test', $this->SUT->get('deeper.array.value'));
+        self::assertEquals(['array' => ['value' => 'test']], $this->SUT->get('deeper'));
     }
 
     public function testDelete()
     {
         $this->SUT->set('key', ['value1' => 1, 'array' => ['value2' => 2, 'value3' => 3]]);
         $this->SUT->delete('key.array.value2');
-        $this->assertEquals(['value1' => 1, 'array' => ['value3' => 3]], $this->SUT->get('key'));
+        self::assertEquals(['value1' => 1, 'array' => ['value3' => 3]], $this->SUT->get('key'));
     }
 
     public function testOverwrite()
     {
         $this->SUT->set('array', ['test' => 'value']);
         $this->SUT->set('array.test', 'other');
-        $this->assertEquals('other', $this->SUT->get('array.test'));
+        self::assertEquals('other', $this->SUT->get('array.test'));
     }
 
     public function testLoadFilesSingleDirectory()
     {
         $this->SUT->load(__DIR__ . '/config/common');
-        $this->assertEquals(
+        self::assertEquals(
             [
                 'main' => [
                     'test' => 'test',
@@ -71,7 +70,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->SUT->load(__DIR__ . '/config/common');
         $this->SUT->load(__DIR__ . '/config/dev');
-        $this->assertEquals(
+        self::assertEquals(
             [
                 'main' => [
                     'test' => 'dev',
